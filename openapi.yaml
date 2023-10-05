@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: AI Prompt Composer API
+  description: This API is for quickly adjusting prompt data to improve LLM Output
+  contact:
+    name: Tobias Trompell
+    email: trompell@th-brandenburg.de
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: '0.1'
+servers:
+  - url: '{protocol}://{environment}:{port}/api/'
+    variables:
+      protocol:
+        description: Protocol to use for the messages.
+        default: http
+        enum:
+          - http
+          - https
+      environment:
+        description: 'Environments: local (localhost)'
+        default: localhost
+        enum:
+          - localhost
+      port:
+        description: Port to be used. Local ports are 8080 (http) and 8443 (https).
+        default: '8080'
+        enum:
+          - '8080'
+          - '443'
+          - '80'
+          - '8443'
+tags:
+  - name: Prompt Response
+    description: API for evaluating message responses.
+paths:
+  /response:
+    post:
+      tags:
+        - Prompt Response
+      summary: Gets the llm response, based on the supplied prompt data
+      description: Builds a prompt from the prompt data and sends the LLM response back.
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostPrompt'
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptResponse'
+        '404':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInformation'
+components:
+  parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      description: JWT token with authorization information.
+      required: false
+      example: >-
+        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      schema:
+        description: Bearer Token.
+        type: string
+        pattern: (^(Bearer )?[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$)
+  schemas:
+    ErrorInformation:
+      type: object
+      description: Information about the error.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Some unique error code.
+          example: 1001
+        message:
+          type: string
+          description: Error message.
+          example: Some very specific error ocured.
+    PostPrompt:
+      description: The input data for the LLM.
+      properties:
+        prompt:
+          type: string
+          description: The input message from a customer.
+        system_prompt:
+          type: string
+          description: The specific instructions to the LLM on how to execute the tasks.
+        input_data:
+          type: string
+          description: JSON of additional data containing the customers information.
+        template:
+          type: string
+          description: The template to define how the prompt data gets assembled into one prompt string.
+      required:
+        - prompt
+        - system_prompt
+        - input_data
+        - template
+    PromptResponse:
+      description: The response of the LLM.
+      properties:
+        response:
+          type: string
+          description: The response of the llm
