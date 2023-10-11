@@ -8,7 +8,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: '0.1'
+  version: '0.2'
 servers:
   - url: '{protocol}://{environment}:{port}/api/'
     variables:
@@ -32,14 +32,37 @@ servers:
           - '80'
           - '8443'
 tags:
-  - name: Prompt Response
-    description: API for evaluating message responses.
+  - name: Prompt
+    description: API for prompting messages to a LLM
+  - name: LLMs
+    description: API reading all available large language models
 paths:
-  /response:
+  /llms:
+    get:
+      tags:
+        - LLMs
+      summary: Gets the llm response, based on the supplied prompt data
+      description: Builds a prompt from the prompt data and sends the LLM response back.
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLlmResponse'
+        '404':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInformation'
+  /prompt:
     post:
       tags:
-        - Prompt Response
-      summary: Gets the llm response, based on the supplied prompt data
+        - Prompt
+      summary: Prompts a message to a LLM and gets response, based on the supplied prompt data
       description: Builds a prompt from the prompt data and sends the LLM response back.
       parameters:
         - $ref: '#/components/parameters/Authorization'
@@ -47,14 +70,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostPrompt'
+              $ref: '#/components/schemas/PostPromptRequest'
       responses:
         '200':
           description: OK.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PromptResponse'
+                $ref: '#/components/schemas/PostPromptResponse'
         '404':
           description: An error occured.
           content:
@@ -75,6 +98,19 @@ components:
         type: string
         pattern: (^(Bearer )?[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$)
   schemas:
+    GetLlmResponse:
+      type: object
+      description: Information about the available LLMs.
+      required:
+        - code
+        - message
+      properties:
+        models:
+          type: array
+          items:
+            type: string
+          description: Unique names of available LLMs
+          example: ["fastchat/llama2", "fastchat/alpaca"]
     ErrorInformation:
       type: object
       description: Information about the error.
@@ -91,27 +127,27 @@ components:
           type: string
           description: Error message.
           example: Some very specific error ocured.
-    PostPrompt:
-      description: The input data for the LLM.
+    PostPromptRequest:
+      description: The input data to prompt to the LLM.
       properties:
-        prompt:
+        userPrompt:
           type: string
-          description: The input message from a customer.
-        system_prompt:
+          description: The input message from a user. Use '{userPrompt}'' as placeholder in template.
+        systemPrompt:
           type: string
-          description: The specific instructions to the LLM on how to execute the tasks.
-        input_data:
-          type: string
-          description: JSON of additional data containing the customers information.
+          description: The specific instructions to the LLM on how to execute the tasks. Use '{systemPrompt}'' as placeholder in template.
+        inputData:
+          type: object
+          description: JSON of additional data containing the customers information. Use '{inputData}'' as placeholder in template.
         template:
           type: string
           description: The template to define how the prompt data gets assembled into one prompt string.
       required:
-        - prompt
-        - system_prompt
-        - input_data
+        - userPrompt
+        - systemPrompt
+        - inputData
         - template
-    PromptResponse:
+    PostPromptResponse:
       description: The response of the LLM.
       properties:
         response:
