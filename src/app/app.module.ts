@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button'
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MatButtonModule } from '@angular/material/button'
     MatInputModule,
     MatGridListModule,
     MatFormFieldModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

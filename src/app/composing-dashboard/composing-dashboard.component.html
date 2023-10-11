@@ -2,25 +2,25 @@
     <mat-grid-tile class="grid-tile-custom">
         <mat-form-field class="big-input">
             <mat-label>User Prompt</mat-label>
-            <textarea matInput cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Sehr geehrte Damen und Herren..."></textarea>
+            <textarea matInput [(ngModel)]="userPrompt" (ngModelChange)="onUserPromptChange($event)"  cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Sehr geehrte Damen und Herren..."></textarea>
         </mat-form-field> 
     </mat-grid-tile>
     <mat-grid-tile class="grid-tile-custom">
         <mat-form-field class="big-input">
             <mat-label>System Prompt</mat-label>
-            <textarea matInput cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Du bist ein Kundensupport-Agent..."></textarea>
+            <textarea matInput [(ngModel)]="systemPrompt" (ngModelChange)="onSystemPromptChange($event)" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Du bist ein Kundensupport-Agent..."></textarea>
         </mat-form-field> 
     </mat-grid-tile>
     <mat-grid-tile class="grid-tile-custom">
         <mat-form-field class="big-input">
             <mat-label>Input Data</mat-label>
-            <textarea matInput cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Im JSON-Format"></textarea>
+            <textarea matInput [(ngModel)]="inputData" (ngModelChange)="onInputDataChange($event)" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="JSON-Data"></textarea>
         </mat-form-field> 
     </mat-grid-tile>
     <mat-grid-tile class="grid-tile-custom">
         <mat-form-field class="big-input">
             <mat-label>Template</mat-label>
-            <textarea matInput cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="{Systemprompt} {Prompt} {Input}"></textarea>
+            <textarea matInput [(ngModel)]="template" (ngModelChange)="onTemplateChange($event)" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Muss {systemPrompt} & {userPrompt} & {inputData} enthalten"></textarea>
         </mat-form-field> 
     </mat-grid-tile>
     <mat-grid-tile colspan="2" class="grid-tile-custom">
