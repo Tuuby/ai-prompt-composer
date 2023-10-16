@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import { LLMsService, PostPromptRequest } from '../api/v1';
+import { PromptService } from '../api/v1';
+import { FormControl } from '@angular/forms';
+import { Validators } from '@angular/forms';
+
+import { jsonValidator, templateValidator } from './customValidators';
 
 @Component({
   selector: 'app-composing-dashboard',
@@ -6,34 +12,33 @@ import { Component } from '@angular/core';
   styleUrls: ['./composing-dashboard.component.scss']
 })
 export class ComposingDashboardComponent {
-  userPrompt: string = "";
-  systemPrompt: string = "";
-  inputData: string = "";
-  template: string = "";
+  userPrompt: FormControl = new FormControl('', Validators.required);
+  systemPrompt: FormControl = new FormControl('', Validators.required);
+  inputData: FormControl = new FormControl('', [Validators.required, jsonValidator()]);
+  template: FormControl = new FormControl('', [Validators.required, templateValidator()]);
+  output: FormControl = new FormControl('')
 
-  onUserPromptChange(e: Event) {
-    console.log("[User prompt]: " + this.userPrompt)
+  llms$ = this.llmsService.llmsGet();
+  prompt$ = this.promptService.promptPost();
+
+  constructor(private llmsService: LLMsService, private promptService: PromptService) {
+    this.userPrompt.valueChanges.subscribe(value => {console.log(value)});
+    this.systemPrompt.valueChanges.subscribe(value => {console.log(value)});
+    this.inputData.valueChanges.subscribe(value => {console.log(value)});
+    this.template.valueChanges.subscribe(value => {console.log(value)});
   }
 
-  onSystemPromptChange(e: Event) {
-    console.log("[System prompt]: " + this.systemPrompt)
-  }
-
-  onInputDataChange(e: Event) {
-    try {
-      JSON.parse(this.inputData);
-    } catch (exception) {
-      console.log("[Input data]: not a valid JSON string")
-      return;
+  submitPrompt() {
+    let request: PostPromptRequest = {
+      userPrompt: this.userPrompt.value,
+      systemPrompt: this.systemPrompt.value,
+      inputData: this.inputData.value,
+      template: this.template.value
     }
-    console.log("[Input data]: " + this.inputData)
+    //send and handle request
+
+    let response: string = "This is the response!";
+    this.output.setValue(response);
   }
 
-  onTemplateChange(e: Event) {
-    if (this.template.includes("{systemPrompt}") && this.template.includes("{userPrompt}") && this.template.includes("{inputData}")) {
-      console.log("[Template]: " + this.template)
-    } else {
-      console.log("[Template]: missing placeholders")
-    }
-  }
 }
