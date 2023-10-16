@@ -2,33 +2,39 @@
     <mat-grid-tile class="grid-tile-custom">
         <mat-form-field class="big-input">
             <mat-label>User Prompt</mat-label>
-            <textarea matInput [(ngModel)]="userPrompt" (ngModelChange)="onUserPromptChange($event)"  cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Sehr geehrte Damen und Herren..."></textarea>
+            <textarea matInput [formControl]="userPrompt" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Sehr geehrte Damen und Herren..."></textarea>
+            <mat-error *ngIf="userPrompt.errors?.['required']">User prompt is required</mat-error>
         </mat-form-field> 
     </mat-grid-tile>
     <mat-grid-tile class="grid-tile-custom">
         <mat-form-field class="big-input">
             <mat-label>System Prompt</mat-label>
-            <textarea matInput [(ngModel)]="systemPrompt" (ngModelChange)="onSystemPromptChange($event)" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Du bist ein Kundensupport-Agent..."></textarea>
+            <textarea matInput [formControl]="systemPrompt" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Du bist ein Kundensupport-Agent..."></textarea>
+            <mat-error *ngIf="systemPrompt.errors?.['required']">System prompt is required</mat-error>
         </mat-form-field> 
     </mat-grid-tile>
     <mat-grid-tile class="grid-tile-custom">
         <mat-form-field class="big-input">
             <mat-label>Input Data</mat-label>
-            <textarea matInput [(ngModel)]="inputData" (ngModelChange)="onInputDataChange($event)" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="JSON-Data"></textarea>
+            <textarea matInput [formControl]="inputData" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="JSON-Data"></textarea>
+            <mat-error *ngIf="inputData.errors?.['required']">Input Data is required</mat-error>
+            <mat-error *ngIf="inputData.errors?.['jsonInvalid']">Invalid JSON</mat-error>
         </mat-form-field> 
     </mat-grid-tile>
     <mat-grid-tile class="grid-tile-custom">
         <mat-form-field class="big-input">
             <mat-label>Template</mat-label>
-            <textarea matInput [(ngModel)]="template" (ngModelChange)="onTemplateChange($event)" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Muss {systemPrompt} & {userPrompt} & {inputData} enthalten"></textarea>
+            <textarea matInput [formControl]="template" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Muss {systemPrompt} & {userPrompt} & {inputData} enthalten"></textarea>
+            <mat-error *ngIf="template.errors?.['required']">Template is required</mat-error>
+            <mat-error *ngIf="template.errors?.['templateInvalid']">Missing {{"{systemPrompt}, {userPrompt} or {inputData}"}}</mat-error>
         </mat-form-field> 
     </mat-grid-tile>
     <mat-grid-tile colspan="2" class="grid-tile-custom">
         <div class="div-custom">
-            <button mat-raised-button color="warn" class="button-custom">Submit</button>
+            <button mat-raised-button color="warn" class="button-custom" (click)="submitPrompt()">Submit</button>
             <mat-form-field class="big-input">
                 <mat-label>Output</mat-label>
-                <textarea matInput cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Sehr geehrter [Name des Kunden], ..." readonly="true"></textarea>
+                <textarea matInput [formControl]="output" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Sehr geehrter [Name des Kunden], ..." readonly="true"></textarea>
             </mat-form-field>
         </div>
     </mat-grid-tile>
