@@ -22,7 +22,7 @@ export class ComposingDashboardComponent {
   onInputDataChange(e: Event) {
     try {
       JSON.parse(this.inputData);
-    } catch (e) {
+    } catch (exception) {
       console.log("[Input data]: not a valid JSON string")
       return;
     }
