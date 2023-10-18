@@ -12,10 +12,21 @@ import { jsonValidator, templateValidator } from './customValidators';
   styleUrls: ['./composing-dashboard.component.scss']
 })
 export class ComposingDashboardComponent {
-  userPrompt: FormControl = new FormControl('', Validators.required);
-  systemPrompt: FormControl = new FormControl('', Validators.required);
-  inputData: FormControl = new FormControl('', [Validators.required, jsonValidator()]);
-  template: FormControl = new FormControl('', [Validators.required, templateValidator()]);
+
+  inputDataObj = {
+    "kunde" : "Hans Mustermann",
+    "zählerstand" : 123456
+  }
+
+  inputDataPreset = JSON.stringify(this.inputDataObj);
+  userPromptPreset = 'Sehr geehrtes Energieversorgungsunternehmen,\n\nhiermit teile ich Ihnen meinen aktuellen Zählerstand mit: [Zählerstand].\n\nVielen Dank und freundliche Grüße,\n[Kunde]'
+  systemPromptPreset = 'Du bist ein Kundenbetreuer bei einem deutschen Energieversorger. Unten steht eine Mail eines Kunden. Formuliere eine freundliche Antwortmail und gib diese aus.'
+  templatePreset = 'systemprompt: {systemPrompt} userData: {inputData} userPrompt: {userPrompt}'
+
+  userPrompt: FormControl = new FormControl(this.userPromptPreset, Validators.required);
+  systemPrompt: FormControl = new FormControl(this.systemPromptPreset, Validators.required);
+  inputData: FormControl = new FormControl(this.inputDataPreset, [Validators.required, jsonValidator()]);
+  template: FormControl = new FormControl(this.templatePreset, [Validators.required, templateValidator()]);
   output: FormControl = new FormControl('')
 
   llms$ = this.llmsService.llmsGet();
@@ -32,13 +43,14 @@ export class ComposingDashboardComponent {
     let request: PostPromptRequest = {
       userPrompt: this.userPrompt.value,
       systemPrompt: this.systemPrompt.value,
-      inputData: this.inputData.value,
+      inputData: JSON.parse(this.inputData.value),
       template: this.template.value
     }
     //send and handle request
-
-    let response: string = "This is the response!";
-    this.output.setValue(response);
+    this.output.setValue('');
+    this.promptService.promptPost(undefined, request).subscribe(e => {    
+      console.log(e.response)
+      this.output.setValue(e.response);
+    });
   }
-
 }

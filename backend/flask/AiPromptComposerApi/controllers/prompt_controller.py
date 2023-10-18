@@ -36,5 +36,5 @@ def prompt_post(authorization=None, post_prompt_request=None):  # noqa: E501
 
     completion = openai.ChatCompletion.create(model=modelname, messages=prompt, max_tokens=512,
                                                  temperature=0)
-    
-    return completion.choices[0]['message']['content']
+    response = completion.choices[0]['message']['content']
+    return PostPromptResponse(response)
