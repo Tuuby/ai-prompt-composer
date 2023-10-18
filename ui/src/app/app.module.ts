@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiModule } from './api/v1';
 import { HttpClientModule } from '@angular/common/http';
+import { Configuration } from './api/v1/configuration';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    ApiModule,
+    ApiModule.forRoot(() => {
+      return new Configuration({
+        basePath: 'http://localhost:8080/api',
+      })}),
     HttpClientModule
   ],
   providers: [],

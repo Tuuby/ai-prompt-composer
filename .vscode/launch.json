@@ -17,19 +17,18 @@
       "url": "http://localhost:9876/debug.html"
     },
     {
-      "name": "Python: Connexion",
+      "name": "Python: AiPromptComposerApi",
       "type": "python",
       "request": "launch",
-      "module": "connexion",
-      "cwd": "${workspaceFolder}",
+      "module": "AiPromptComposerApi",
+      "cwd": "${workspaceFolder}/backend/flask/",
       "env": {
         "FLASK_ENV": "development",
         "FLASK_DEBUG": "1",
-        "PYTHONPATH": "${workspaceFolder}/backend/flask/"
       },
       "args": [
         "run",
-        "backend/flask/AiPromptComposerApi/openapi/openapi.yaml",
+        "/openapi/openapi.yaml",
         "--port",
         "8080",
         "--debug"
