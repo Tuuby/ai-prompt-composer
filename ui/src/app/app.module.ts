@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComposingDashboardComponent } from './composing-dashboard/composing-dashboard.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiModule } from './api/v1';
 import { HttpClientModule } from '@angular/common/http';
 import { Configuration } from './api/v1/configuration';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { Configuration } from './api/v1/configuration';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NoopAnimationsModule,
+    BrowserAnimationsModule,
     MatInputModule,
     MatGridListModule,
     MatFormFieldModule,
@@ -33,7 +34,8 @@ import { Configuration } from './api/v1/configuration';
       return new Configuration({
         basePath: 'http://localhost:8080/api',
       })}),
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

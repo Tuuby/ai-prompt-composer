@@ -32,10 +32,13 @@
     <mat-grid-tile colspan="2" class="grid-tile-custom">
         <div class="div-custom">
             <button mat-raised-button color="warn" class="button-custom" (click)="submitPrompt()">Submit</button>
-            <mat-form-field class="big-input">
+            <mat-form-field class="big-input" *ngIf="!spinner else spinnerTp">
                 <mat-label>Output</mat-label>
-                <textarea matInput [formControl]="output" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Sehr geehrter [Name des Kunden], ..." readonly="true"></textarea>
+                <textarea matInput [formControl]="output" cdkTextareaAutosize cdkAutosizeMaxRows="10" placeholder="Sehr geehrter [Name des Kunden], ..." readonly="true"></textarea>
             </mat-form-field>
+            <ng-template #spinnerTp>
+                <mat-spinner mode="indeterminate"></mat-spinner>
+            </ng-template>
         </div>
     </mat-grid-tile>
 </mat-grid-list>
