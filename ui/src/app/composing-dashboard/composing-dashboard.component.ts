@@ -13,6 +13,8 @@ import { jsonValidator, templateValidator } from './customValidators';
 })
 export class ComposingDashboardComponent {
 
+  spinner = false;
+
   inputDataObj = {
     "kunde" : "Hans Mustermann",
     "zählerstand" : 123456
@@ -48,9 +50,11 @@ export class ComposingDashboardComponent {
     }
     //send and handle request
     this.output.setValue('');
+    this.spinner = true;
     this.promptService.promptPost(undefined, request).subscribe(e => {    
       console.log(e.response)
       this.output.setValue(e.response);
+      this.spinner = false;
     });
   }
 }
