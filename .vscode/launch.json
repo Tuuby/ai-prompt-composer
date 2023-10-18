@@ -15,6 +15,26 @@
       "request": "launch",
       "preLaunchTask": "npm: test",
       "url": "http://localhost:9876/debug.html"
-    }
+    },
+    {
+      "name": "Python: Connexion",
+      "type": "python",
+      "request": "launch",
+      "module": "connexion",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "1",
+        "PYTHONPATH": "${workspaceFolder}/backend/flask/"
+      },
+      "args": [
+        "run",
+        "backend/flask/AiPromptComposerApi/openapi/openapi.yaml",
+        "--port",
+        "8080",
+        "--debug"
+      ],
+      "jinja": true
+    },
   ]
 }

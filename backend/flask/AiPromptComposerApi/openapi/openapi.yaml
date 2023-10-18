@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: trompell@th-brandenburg.de
+    name: Tobias Trompell
+  description: This API is for quickly adjusting prompt data to improve LLM Output
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: AI Prompt Composer API
+  version: "0.2"
+servers:
+- url: "{protocol}://{environment}:{port}/api/"
+  variables:
+    protocol:
+      default: http
+      description: Protocol to use for the messages.
+      enum:
+      - http
+      - https
+    environment:
+      default: localhost
+      description: "Environments: local (localhost)"
+      enum:
+      - localhost
+    port:
+      default: "8080"
+      description: Port to be used. Local ports are 8080 (http) and 8443 (https).
+      enum:
+      - "8080"
+      - "443"
+      - "80"
+      - "8443"
+tags:
+- description: API for prompting messages to a LLM
+  name: Prompt
+- description: API reading all available large language models
+  name: LLMs
+paths:
+  /llms:
+    get:
+      description: Builds a prompt from the prompt data and sends the LLM response
+        back.
+      operationId: llms_get
+      parameters:
+      - description: JWT token with authorization information.
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        explode: false
+        in: header
+        name: Authorization
+        required: false
+        schema:
+          description: Bearer Token.
+          pattern: "(^(Bearer )?[A-Za-z0-9-_]*\\.[A-Za-z0-9-_]*\\.[A-Za-z0-9-_]*$)"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLlmResponse'
+          description: OK.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInformation'
+          description: An error occured.
+      summary: "Gets the llm response, based on the supplied prompt data"
+      tags:
+      - LLMs
+      x-openapi-router-controller: AiPromptComposerApi.controllers.llms_controller
+  /prompt:
+    post:
+      description: Builds a prompt from the prompt data and sends the LLM response
+        back.
+      operationId: prompt_post
+      parameters:
+      - description: JWT token with authorization information.
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        explode: false
+        in: header
+        name: Authorization
+        required: false
+        schema:
+          description: Bearer Token.
+          pattern: "(^(Bearer )?[A-Za-z0-9-_]*\\.[A-Za-z0-9-_]*\\.[A-Za-z0-9-_]*$)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostPromptRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostPromptResponse'
+          description: OK.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInformation'
+          description: An error occured.
+      summary: "Prompts a message to a LLM and gets response, based on the supplied\
+        \ prompt data"
+      tags:
+      - Prompt
+      x-openapi-router-controller: AiPromptComposerApi.controllers.prompt_controller
+components:
+  parameters:
+    Authorization:
+      description: JWT token with authorization information.
+      example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      explode: false
+      in: header
+      name: Authorization
+      required: false
+      schema:
+        description: Bearer Token.
+        pattern: "(^(Bearer )?[A-Za-z0-9-_]*\\.[A-Za-z0-9-_]*\\.[A-Za-z0-9-_]*$)"
+        type: string
+      style: simple
+  schemas:
+    GetLlmResponse:
+      description: Information about the available LLMs.
+      example:
+        models:
+        - fastchat/llama2
+        - fastchat/alpaca
+      properties:
+        models:
+          description: Unique names of available LLMs
+          example:
+          - fastchat/llama2
+          - fastchat/alpaca
+          items:
+            type: string
+          title: models
+          type: array
+      required:
+      - code
+      - message
+      title: GetLlmResponse
+      type: object
+    ErrorInformation:
+      description: Information about the error.
+      properties:
+        code:
+          description: Some unique error code.
+          example: 1001
+          format: int32
+          title: code
+          type: integer
+        message:
+          description: Error message.
+          example: Some very specific error ocured.
+          title: message
+          type: string
+      required:
+      - code
+      - message
+      title: ErrorInformation
+      type: object
+    PostPromptRequest:
+      description: The input data to prompt to the LLM.
+      example:
+        template: template
+        systemPrompt: systemPrompt
+        inputData: "{}"
+        userPrompt: userPrompt
+      properties:
+        userPrompt:
+          description: "The input message from a user. Use '{userPrompt}'' as placeholder\
+            \ in template."
+          title: userPrompt
+          type: string
+        systemPrompt:
+          description: "The specific instructions to the LLM on how to execute the\
+            \ tasks. Use '{systemPrompt}'' as placeholder in template."
+          title: systemPrompt
+          type: string
+        inputData:
+          description: "JSON of additional data containing the customers information.\
+            \ Use '{inputData}'' as placeholder in template."
+          title: inputData
+          type: object
+        template:
+          description: The template to define how the prompt data gets assembled into
+            one prompt string.
+          title: template
+          type: string
+      required:
+      - inputData
+      - systemPrompt
+      - template
+      - userPrompt
+      title: PostPromptRequest
+    PostPromptResponse:
+      description: The response of the LLM.
+      example:
+        response: response
+      properties:
+        response:
+          description: The response of the llm
+          title: response
+          type: string
+      title: PostPromptResponse
