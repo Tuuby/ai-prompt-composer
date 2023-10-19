@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "npm run generate:api",
+    "prebuild": "npm run generate:api",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate:api": "openapi-generator-cli generate -i ./openapi.yaml -g typescript-angular -o src/app/api/v1"
+    "generate:api": "openapi-generator-cli generate -i ./../openapi.yaml -g typescript-angular -o src/app/api/v1"
   },
   "private": true,
   "dependencies": {
