@@ -32,7 +32,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
     ReactiveFormsModule,
     ApiModule.forRoot(() => {
       return new Configuration({
-        basePath: 'http://localhost:8080/api',
+        basePath: '/api',
       })}),
     HttpClientModule,
     MatProgressSpinnerModule

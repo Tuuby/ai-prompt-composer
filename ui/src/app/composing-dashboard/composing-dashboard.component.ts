@@ -15,15 +15,16 @@ export class ComposingDashboardComponent {
 
   spinner = false;
 
-  inputDataObj = {
+  inputDataObj = 
+  {
     "kunde" : "Hans Mustermann",
     "zählerstand" : 123456
-  }
+  };
 
   inputDataPreset = JSON.stringify(this.inputDataObj);
   userPromptPreset = 'Hallo [Energieversorger-Team],\nleider habe ich heute meinen Zählerstand heute erst verspätet eingegeben - die aktuelle Rechnung wurde aber bereits auf den Schätzwert ausgestellt und ist damit zu hoch ausgefallen - ebenso der Abschlag.\nKann die aktuelle Rechnung noch anhand des neuen, heute am 15.10.21 eingegebenen Wertes korrigiert werden und der Abschlag angepasst werden?\nDanke vorab und freundliche Grüße\n[Name des Kunden]'
   systemPromptPreset = 'Du bist ein Kundenbetreuer bei einem deutschen Energieversorger.\nUnten steht eine Mail eines Kunden und die dazugehörigen Stammdaten.\nFormuliere eine freundliche Antwortmail und gib diese aus.'
-  templatePreset = '{systemPrompt}\nKundemail: {userPrompt}\nStammdaten: {inputData} '
+  templatePreset = 'systemprompt: {systemPrompt}\nuserData: {inputData}\nuserPrompt: {userPrompt}'
 
   userPrompt: FormControl = new FormControl(this.userPromptPreset, Validators.required);
   systemPrompt: FormControl = new FormControl(this.systemPromptPreset, Validators.required);
