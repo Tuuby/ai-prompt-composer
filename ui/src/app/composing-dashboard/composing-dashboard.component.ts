@@ -36,10 +36,6 @@ export class ComposingDashboardComponent {
   prompt$ = this.promptService.promptPost();
 
   constructor(private llmsService: LLMsService, private promptService: PromptService) {
-    this.userPrompt.valueChanges.subscribe(value => {console.log(value)});
-    this.systemPrompt.valueChanges.subscribe(value => {console.log(value)});
-    this.inputData.valueChanges.subscribe(value => {console.log(value)});
-    this.template.valueChanges.subscribe(value => {console.log(value)});
   }
 
   submitPrompt() {
