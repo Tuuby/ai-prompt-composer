@@ -13,6 +13,8 @@ import { jsonValidator, templateValidator } from './customValidators';
 })
 export class ComposingDashboardComponent {
 
+  languageModels: string[] = ["ChatGPT", "Llama v2"];
+
   spinner = false;
 
   inputDataObj = 
@@ -26,6 +28,7 @@ export class ComposingDashboardComponent {
   systemPromptPreset = 'Du bist ein Kundenbetreuer bei einem deutschen Energieversorger.\nUnten steht eine Mail eines Kunden und die dazugehörigen Stammdaten.\nFormuliere eine freundliche Antwortmail und gib diese aus.'
   templatePreset = 'systemprompt: {systemPrompt}\nuserData: {inputData}\nuserPrompt: {userPrompt}'
 
+  modelSelector: FormControl = new FormControl('');
   userPrompt: FormControl = new FormControl(this.userPromptPreset, Validators.required);
   systemPrompt: FormControl = new FormControl(this.systemPromptPreset, Validators.required);
   inputData: FormControl = new FormControl(this.inputDataPreset, [Validators.required, jsonValidator()]);
@@ -36,7 +39,12 @@ export class ComposingDashboardComponent {
   prompt$ = this.promptService.promptPost();
 
   constructor(private llmsService: LLMsService, private promptService: PromptService) {
+  }
 
+  ngOnInit() {
+    this.llmsService.llmsGet().subscribe(e => {
+      this.modelSelector.setValue(e.models)
+    })
   }
 
   submitPrompt() {
@@ -45,9 +53,9 @@ export class ComposingDashboardComponent {
       systemPrompt: this.systemPrompt.value,
       inputData: JSON.parse(this.inputData.value),
       template: this.template.value,
-      modelName: ""
+      modelName: this.modelSelector.value
     }
-    //send and handle request
+
     this.output.setValue('');
     this.spinner = true;
     this.promptService.promptPost(undefined, request).subscribe(e => {    
@@ -56,13 +64,4 @@ export class ComposingDashboardComponent {
       this.spinner = false;
     });
   }
-}
-
-export class ReactiveSelectComp {
-  models = [
-    { value: "ChatGPT" },
-    { value: "Llama v2"}
-  ];
-
-  modelSelector = new FormControl(this.models)
 }

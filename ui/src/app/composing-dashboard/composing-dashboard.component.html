@@ -1,8 +1,8 @@
 <mat-form-field>
     <mat-label>Sprachmodell</mat-label>
     <mat-select [formControl]="modelSelector">
-        <mat-option *ngFor="let model of models" [value]="model.value">
-            {{model.value}}
+        <mat-option *ngFor="let model of languageModels" [value]="model">
+            {{model}}
         </mat-option>
     </mat-select>
 </mat-form-field>
