@@ -1,5 +1,7 @@
 import connexion
 import openai
+import sys
+import os
 
 from typing import Dict
 from typing import Tuple
@@ -26,15 +28,21 @@ def prompt_post(authorization=None, post_prompt_request=None):  # noqa: E501
     if connexion.request.is_json:
         post_prompt_request = PostPromptRequest.from_dict(connexion.request.get_json())  # noqa: E501
 
-    openai.api_key = "EMPTY"
-    openai.api_base =  "http://{hostname}/v1"
-
-
-    modelname = "gpt-3.5-turbo"
+    openAiApiBase = os.getenv('OPEN_AI_API_BASE')
+    openAiApiKey = os.getenv('OPEN_AI_API_KEY')
     
+    if openAiApiBase == "OPEN_AI_API_BASE":
+        print('Environment variable OPEN_AI_API_BASE has no value!', file=sys.stderr)
+
+    if openAiApiKey == "OPEN_AI_API_KEY":
+        print('Environment variable OPEN_AI_API_KEY has no value. This is OK for fastchat or other api compatible applications.')
+    
+    openai.api_key = openAiApiKey
+    openai.api_base = openAiApiBase
+
     prompt = post_prompt_request.template.replace('{userPrompt}', post_prompt_request.user_prompt).replace('{systemPrompt}', post_prompt_request.system_prompt).replace('{inputData}', str(post_prompt_request.input_data))
 
-    completion = openai.ChatCompletion.create(model=modelname, messages=prompt, max_tokens=512,
+    completion = openai.ChatCompletion.create(model=post_prompt_request.model_name, messages=prompt, max_tokens=512,
                                                  temperature=0)
     response = completion.choices[0]['message']['content']
     return PostPromptResponse(response)
