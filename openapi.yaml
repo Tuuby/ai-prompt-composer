@@ -130,6 +130,9 @@ components:
     PostPromptRequest:
       description: The input data to prompt to the LLM.
       properties:
+        modelName:
+          type: string
+          description: Name of the desired LLM.
         userPrompt:
           type: string
           description: The input message from a user. Use '{userPrompt}'' as placeholder in template.
@@ -143,6 +146,7 @@ components:
           type: string
           description: The template to define how the prompt data gets assembled into one prompt string.
       required:
+        - modelName
         - userPrompt
         - systemPrompt
         - inputData
