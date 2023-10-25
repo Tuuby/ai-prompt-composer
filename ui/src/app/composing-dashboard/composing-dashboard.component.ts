@@ -36,6 +36,7 @@ export class ComposingDashboardComponent {
   prompt$ = this.promptService.promptPost();
 
   constructor(private llmsService: LLMsService, private promptService: PromptService) {
+
   }
 
   submitPrompt() {
@@ -43,7 +44,8 @@ export class ComposingDashboardComponent {
       userPrompt: this.userPrompt.value,
       systemPrompt: this.systemPrompt.value,
       inputData: JSON.parse(this.inputData.value),
-      template: this.template.value
+      template: this.template.value,
+      modelName: ""
     }
     //send and handle request
     this.output.setValue('');
@@ -54,4 +56,13 @@ export class ComposingDashboardComponent {
       this.spinner = false;
     });
   }
+}
+
+export class ReactiveSelectComp {
+  models = [
+    { value: "ChatGPT" },
+    { value: "Llama v2"}
+  ];
+
+  modelSelector = new FormControl(this.models)
 }

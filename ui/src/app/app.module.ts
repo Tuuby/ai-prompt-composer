@@ -14,6 +14,7 @@ import { ApiModule } from './api/v1';
 import { HttpClientModule } from '@angular/common/http';
 import { Configuration } from './api/v1/configuration';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatSelectModule } from '@angular/material/select'
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
         basePath: '/api',
       })}),
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
