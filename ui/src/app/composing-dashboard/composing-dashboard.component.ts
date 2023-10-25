@@ -43,7 +43,8 @@ export class ComposingDashboardComponent {
       userPrompt: this.userPrompt.value,
       systemPrompt: this.systemPrompt.value,
       inputData: JSON.parse(this.inputData.value),
-      template: this.template.value
+      template: this.template.value,
+      modelName: 'gpt-3.5-turbo',
     }
     //send and handle request
     this.output.setValue('');

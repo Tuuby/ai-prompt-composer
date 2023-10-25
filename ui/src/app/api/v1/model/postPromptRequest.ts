@@ -16,6 +16,10 @@
  */
 export interface PostPromptRequest { 
     /**
+     * Name of the desired LLM.
+     */
+    modelName: string;
+    /**
      * The input message from a user. Use \'{userPrompt}\'\' as placeholder in template.
      */
     userPrompt: string;

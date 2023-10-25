@@ -28,6 +28,9 @@ COPY --from=node-build-stage /app/ui/dist/ai-prompt-composer/ /usr/src/app/www
 
 EXPOSE 8080
 
+ENV OPEN_AI_API_KEY=OPEN_AI_API_KEY
+ENV OPEN_AI_API_BASE=OPEN_AI_API_BASE
+
 ENTRYPOINT ["python3"]
 
 CMD ["-m", "AiPromptComposerApi"]
