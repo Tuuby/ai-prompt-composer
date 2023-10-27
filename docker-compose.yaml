@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    image: local/ai-prompt-composer
+    environment:
+      - OPEN_AI_API_KEY=EMPTY
+      - OPEN_AI_API_BASE=http://{hostname}/v1 #insert openai api host here
+    ports:
+      - 1234:8080

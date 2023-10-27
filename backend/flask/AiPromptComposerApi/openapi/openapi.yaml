@@ -170,10 +170,15 @@ components:
       description: The input data to prompt to the LLM.
       example:
         template: template
+        modelName: modelName
         systemPrompt: systemPrompt
         inputData: "{}"
         userPrompt: userPrompt
       properties:
+        modelName:
+          description: Name of the desired LLM.
+          title: modelName
+          type: string
         userPrompt:
           description: "The input message from a user. Use '{userPrompt}'' as placeholder\
             \ in template."
@@ -196,6 +201,7 @@ components:
           type: string
       required:
       - inputData
+      - modelName
       - systemPrompt
       - template
       - userPrompt

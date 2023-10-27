@@ -12,9 +12,11 @@ class PostPromptRequest(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, user_prompt=None, system_prompt=None, input_data=None, template=None):  # noqa: E501
+    def __init__(self, model_name=None, user_prompt=None, system_prompt=None, input_data=None, template=None):  # noqa: E501
         """PostPromptRequest - a model defined in OpenAPI
 
+        :param model_name: The model_name of this PostPromptRequest.  # noqa: E501
+        :type model_name: str
         :param user_prompt: The user_prompt of this PostPromptRequest.  # noqa: E501
         :type user_prompt: str
         :param system_prompt: The system_prompt of this PostPromptRequest.  # noqa: E501
@@ -25,6 +27,7 @@ class PostPromptRequest(Model):
         :type template: str
         """
         self.openapi_types = {
+            'model_name': str,
             'user_prompt': str,
             'system_prompt': str,
             'input_data': object,
@@ -32,12 +35,14 @@ class PostPromptRequest(Model):
         }
 
         self.attribute_map = {
+            'model_name': 'modelName',
             'user_prompt': 'userPrompt',
             'system_prompt': 'systemPrompt',
             'input_data': 'inputData',
             'template': 'template'
         }
 
+        self._model_name = model_name
         self._user_prompt = user_prompt
         self._system_prompt = system_prompt
         self._input_data = input_data
@@ -53,6 +58,31 @@ class PostPromptRequest(Model):
         :rtype: PostPromptRequest
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def model_name(self) -> str:
+        """Gets the model_name of this PostPromptRequest.
+
+        Name of the desired LLM.  # noqa: E501
+
+        :return: The model_name of this PostPromptRequest.
+        :rtype: str
+        """
+        return self._model_name
+
+    @model_name.setter
+    def model_name(self, model_name: str):
+        """Sets the model_name of this PostPromptRequest.
+
+        Name of the desired LLM.  # noqa: E501
+
+        :param model_name: The model_name of this PostPromptRequest.
+        :type model_name: str
+        """
+        if model_name is None:
+            raise ValueError("Invalid value for `model_name`, must not be `None`")  # noqa: E501
+
+        self._model_name = model_name
 
     @property
     def user_prompt(self) -> str:
