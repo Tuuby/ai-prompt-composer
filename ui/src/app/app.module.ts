@@ -33,7 +33,7 @@ import { MatSelectModule } from '@angular/material/select'
     ReactiveFormsModule,
     ApiModule.forRoot(() => {
       return new Configuration({
-        basePath: '/api',
+        basePath: 'http://localhost:8080/api',
       })}),
     HttpClientModule,
     MatProgressSpinnerModule,

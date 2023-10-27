@@ -43,7 +43,10 @@ export class ComposingDashboardComponent {
 
   ngOnInit() {
     this.llmsService.llmsGet().subscribe(e => {
-      this.modelSelector.setValue(e.models)
+      this.languageModels = [];
+      e.models?.forEach(model => {
+        this.languageModels.push(model);
+      })
     })
   }
 
