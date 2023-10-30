@@ -37,4 +37,4 @@ def llms_get(authorization=None):  # noqa: E501
     models = openai.Model.list()
     modelIds = [item.id for item in models.data]
 
-    return modelIds
+    return GetLlmResponse(modelIds)

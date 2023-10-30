@@ -1,19 +1,28 @@
+<mat-form-field>
+    <mat-label>Sprachmodell</mat-label>
+    <mat-select [formControl]="modelSelector">
+        <mat-option *ngFor="let model of languageModels" [value]="model">
+            {{model}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<p>Form value: {{modelSelector.value.value}}</p>
 <mat-grid-list cols="2" rowHeight="250px" class="grid-layout-custom">
-    <mat-grid-tile class="grid-tile-custom">
+    <mat-grid-tile>
         <mat-form-field class="big-input">
             <mat-label>User Prompt</mat-label>
             <textarea matInput [formControl]="userPrompt" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Sehr geehrte Damen und Herren..."></textarea>
             <mat-error *ngIf="userPrompt.errors?.['required']">User prompt is required</mat-error>
         </mat-form-field> 
     </mat-grid-tile>
-    <mat-grid-tile class="grid-tile-custom">
+    <mat-grid-tile>
         <mat-form-field class="big-input">
             <mat-label>System Prompt</mat-label>
             <textarea matInput [formControl]="systemPrompt" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Du bist ein Kundensupport-Agent..."></textarea>
             <mat-error *ngIf="systemPrompt.errors?.['required']">System prompt is required</mat-error>
         </mat-form-field> 
     </mat-grid-tile>
-    <mat-grid-tile class="grid-tile-custom">
+    <mat-grid-tile>
         <mat-form-field class="big-input">
             <mat-label>Input Data</mat-label>
             <textarea matInput [formControl]="inputData" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="JSON-Data"></textarea>
@@ -21,7 +30,7 @@
             <mat-error *ngIf="inputData.errors?.['jsonInvalid']">Invalid JSON</mat-error>
         </mat-form-field> 
     </mat-grid-tile>
-    <mat-grid-tile class="grid-tile-custom">
+    <mat-grid-tile>
         <mat-form-field class="big-input">
             <mat-label>Template</mat-label>
             <textarea matInput [formControl]="template" cdkTextareaAutosize cdkAutosizeMaxRows="12" placeholder="Muss {systemPrompt} & {userPrompt} & {inputData} enthalten"></textarea>
@@ -29,13 +38,11 @@
             <mat-error *ngIf="template.errors?.['templateInvalid']">Missing {{"{systemPrompt}, {userPrompt} or {inputData}"}}</mat-error>
         </mat-form-field> 
     </mat-grid-tile>
-    <mat-grid-tile colspan="2" class="grid-tile-custom">
-        <div class="div-custom">
-            <button mat-raised-button color="warn" class="button-custom" (click)="submitPrompt()">Submit</button>
-            <p *ngIf="!spinner else spinnerTp">Testnachricht fuer eine Antwort von einem LLM das ganz lange Antwort nachtrichten {{output.value}}</p>
-            <ng-template #spinnerTp>
-                <mat-spinner mode="indeterminate"></mat-spinner>
-            </ng-template>
-        </div>
-    </mat-grid-tile>
 </mat-grid-list>
+<div class="output-div">
+    <button mat-raised-button color="warn" class="button-custom" (click)="submitPrompt()">Submit</button>
+    <pre style="padding: 10px;" *ngIf="!spinner else spinnerTp">{{output.value}}</pre>
+    <ng-template #spinnerTp>
+        <mat-spinner mode="indeterminate"></mat-spinner>
+    </ng-template>
+</div>
