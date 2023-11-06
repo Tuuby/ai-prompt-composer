@@ -41,7 +41,7 @@
 </mat-grid-list>
 <div class="output-div">
     <button mat-raised-button color="warn" class="button-custom" (click)="submitPrompt()">Submit</button>
-    <pre style="padding: 10px;" *ngIf="!spinner else spinnerTp">{{output.value}}</pre>
+    <pre class="output-pre" *ngIf="!spinner else spinnerTp">{{output.value}}</pre>
     <ng-template #spinnerTp>
         <mat-spinner mode="indeterminate"></mat-spinner>
     </ng-template>
