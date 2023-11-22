@@ -23,14 +23,17 @@ COPY backend/flask/requirements.txt /usr/src/app/
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
+COPY /build/entrypoint.sh /usr/src/app/entrypoint.sh
 COPY backend/flask/AiPromptComposerApi/ /usr/src/app/AiPromptComposerApi/
 COPY --from=node-build-stage /app/ui/dist/ai-prompt-composer/ /usr/src/app/www
 
 EXPOSE 8080
 
+ENV IS_DOCKER_DEPLOY=True
+ENV WEB_BASE_URL=""
 ENV OPEN_AI_API_KEY=OPEN_AI_API_KEY
 ENV OPEN_AI_API_BASE=OPEN_AI_API_BASE
 
-ENTRYPOINT ["python3"]
+ENTRYPOINT ["/bin/sh"]
 
-CMD ["-m", "AiPromptComposerApi"]
+CMD ["entrypoint.sh"]
