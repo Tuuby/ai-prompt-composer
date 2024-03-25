@@ -38,11 +38,11 @@ def prompt_post(authorization=None, post_prompt_request=None):  # noqa: E501
         print('Environment variable OPEN_AI_API_KEY has no value. This is OK for fastchat or other api compatible applications.')
     
     openai.api_key = openAiApiKey
-    openai.api_base = openAiApiBase
+    openai.base_url = openAiApiBase
 
     prompt = post_prompt_request.template.replace('{userPrompt}', post_prompt_request.user_prompt).replace('{systemPrompt}', post_prompt_request.system_prompt).replace('{inputData}', str(post_prompt_request.input_data))
 
-    completion = openai.ChatCompletion.create(model=post_prompt_request.model_name, messages=prompt, max_tokens=512,
+    completion = openai.chat.completions.create(model=post_prompt_request.model_name, messages=prompt, max_tokens=512,
                                                  temperature=0)
-    response = completion.choices[0]['message']['content']
+    response = completion.choices[0].message.content
     return PostPromptResponse(response)
