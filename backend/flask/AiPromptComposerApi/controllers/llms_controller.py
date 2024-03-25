@@ -15,7 +15,7 @@ def llms_get(authorization=None):  # noqa: E501
 
     :rtype: Union[GetLlmResponse, Tuple[GetLlmResponse, int], Tuple[GetLlmResponse, int, Dict[str, str]]
     """
-
+    
     openAiApiBase = os.getenv('OPEN_AI_API_BASE')
     openAiApiKey = os.getenv('OPEN_AI_API_KEY')
     
@@ -26,9 +26,9 @@ def llms_get(authorization=None):  # noqa: E501
         print('Environment variable OPEN_AI_API_KEY has no value. This is OK for fastchat or other api compatible applications.')
     
     openai.api_key = openAiApiKey
-    openai.api_base = openAiApiBase
+    openai.base_url = openAiApiBase
 
-    models = openai.Model.list()
+    models = openai.models.list()
     modelIds = [item.id for item in models.data]
 
     return GetLlmResponse(modelIds)
