@@ -2,14 +2,8 @@ import os
 import sys
 import openai
 
-from typing import Dict
-from typing import Tuple
-from typing import Union
-
 from AiPromptComposerApi.models.error_information import ErrorInformation  # noqa: E501
 from AiPromptComposerApi.models.get_llm_response import GetLlmResponse  # noqa: E501
-from AiPromptComposerApi import util
-
 
 def llms_get(authorization=None):  # noqa: E501
     """Gets the llm response, based on the supplied prompt data
